@@ -15,6 +15,15 @@ package org.abn.http
 			super(context.endpoint);
 		}
 		
+		
+		/**
+		 * sends request to specified url (endpoint+urlAddon) 
+		 * @param urlAddon the addon to be concatinated at the endpoint
+		 * @param responseHandler eg. public function handle(response:ResponseContext):void, to be executed upon any response returned.
+		 * @param params URLVariables to be passed with the request
+		 * @param method GET or POST method of the request
+		 * @return URLLoader - the internal loader used to make the request 
+		 */
 		public function sendRequest(urlAddon:String, responseHandler:Function, params:URLVariables = null, method:String = "GET"):URLLoader
 		{
 			if(this.responseHandler != null)
