@@ -24,7 +24,6 @@ package org.jivesoftware.xiff.data.whiteboard{
 	import org.jivesoftware.xiff.data.ISerializable;
 	import org.jivesoftware.xiff.data.XMLStanza;
 	
-	import org.jivesoftware.xiff.data.whiteboard.WhiteboardExtension;
 	import org.jivesoftware.xiff.data.whiteboard.Stroke;
 	import org.jivesoftware.xiff.data.whiteboard.Fill;
 	import flash.xml.XMLNode;

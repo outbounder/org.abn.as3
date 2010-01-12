@@ -12,7 +12,7 @@ package org.abn.http
 		
 		public function RequestContext(context:HTTPContext)
 		{
-			super(context.endpoint);
+			super(context.getProps(), context.endpoint);
 		}
 		
 		
@@ -43,14 +43,21 @@ package org.abn.http
 		
 		private function onRequestComplete(e:Event):void
 		{
-			var response:ResponseContext = new ResponseContext((e.target as URLLoader).data, this);
-			this.responseHandler(response);
+			if(this.responseHandler != null)
+			{
+				var response:ResponseContext = new ResponseContext((e.target as URLLoader).data, this);
+				this.responseHandler(response);
+			}
 		}
 		
 		private function onRequestIOError(e:IOErrorEvent):void
 		{
-			var response:ResponseContext = new ResponseContext(e.toString(), this);
-			this.responseHandler(response);
+			trace(e.toString());
+			if(this.responseHandler != null)
+			{
+				var response:ResponseContext = new ResponseContext(e.toString(), this);
+				this.responseHandler(response);
+			}
 		}
 	}
 }

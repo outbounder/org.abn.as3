@@ -5,7 +5,7 @@ package org.abn.http
 		private var _data:String;
 		public function ResponseContext(data:String, context:HTTPContext)
 		{
-			super(context.endpoint);
+			super(context.getProps(), context.endpoint);
 			this._data = data;
 		}
 		

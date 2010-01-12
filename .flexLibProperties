@@ -2,8 +2,13 @@
 <flexLibProperties includeAllClasses="true" version="3">
   <includeClasses>
     <classEntry path="org.abn.AppContext"/>
-    <classEntry path="org.abn.xmpp.XMPPContext"/>
+    <classEntry path="org.abn.Context"/>
+    <classEntry path="org.abn.ContextLoader"/>
+    <classEntry path="org.abn.ContextParser"/>
+    <classEntry path="org.abn.bot.BotContext"/>
     <classEntry path="org.abn.http.HTTPContext"/>
+    <classEntry path="org.abn.xmpp.XMPPContext"/>
+    <classEntry path="org.abn.xmpp.MessageRequest"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

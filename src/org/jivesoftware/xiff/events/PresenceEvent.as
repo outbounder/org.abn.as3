@@ -24,7 +24,6 @@
 package org.jivesoftware.xiff.events
 {
 	import flash.events.Event;
-	import org.jivesoftware.xiff.data.Presence;
 
 	public class PresenceEvent extends Event
 	{

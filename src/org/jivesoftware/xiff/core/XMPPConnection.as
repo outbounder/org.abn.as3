@@ -811,7 +811,7 @@ package org.jivesoftware.xiff.core
 		{
 			var authIQ:IQ = new IQ( null, IQ.GET_TYPE, XMPPStanza.generateID("log_user_"), "beginAuthentication_result", this, null );
 			var authExt:AuthExtension = new AuthExtension(authIQ.getNode());
-			authExt.username = username
+			authExt.username = username;
 			
 			authIQ.addExtension(authExt);
 			send( authIQ );
