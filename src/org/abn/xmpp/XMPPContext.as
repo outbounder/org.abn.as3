@@ -91,7 +91,7 @@ package org.abn.xmpp
 			p.show = Presence.SHOW_CHAT;
 			this._connection.send(p);
 			
-			this.pingTimer = new Timer(1*1000);
+			this.pingTimer = new Timer(15*1000);
 			this.pingTimer.addEventListener(TimerEvent.TIMER, onPing);
 			
 			this.onConnected(e);
