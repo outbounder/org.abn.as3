@@ -1,5 +1,8 @@
 package org.abn.xmpp
 {
+	import flash.events.TimerEvent;
+	import flash.utils.Timer;
+	
 	import org.abn.AppContext;
 	import org.jivesoftware.xiff.core.JID;
 	import org.jivesoftware.xiff.core.XMPPConnection;
@@ -18,9 +21,10 @@ package org.abn.xmpp
 		
 		private var onIncomingMessage:Function;
 		private var onConnected:Function;
-		private var onConnectFailed:Function;
+		private var onDisconnected:Function;
 		
 		private var msgRequests:Array;
+		private var pingTimer:Timer;
 		
 		public function XMPPContext(props:Array, id:String)
 		{
@@ -63,40 +67,52 @@ package org.abn.xmpp
 		 * @param onIncomingMessage function(from:String, msg:String)
 		 * @return connected status
 		 */
-		public function connect(onConnected:Function, onConnectFailed:Function, onIncomingMessage:Function):Boolean
+		public function connect(onConnected:Function, onDisconnected:Function, onIncomingMessage:Function):Boolean
 		{
 			this.onConnected = onConnected;
-			this.onConnectFailed = onConnectFailed;
+			this.onDisconnected = onDisconnected;
 			this.onIncomingMessage = onIncomingMessage;
 			
 			this._connection.addEventListener(LoginEvent.LOGIN, onLoginHandler);
 			this._connection.addEventListener(DisconnectionEvent.DISCONNECT, onDisconnect);
 			this._connection.addEventListener(MessageEvent.MESSAGE, onMessage);
+			
 			return this._connection.connect("flash");
 		}
 		
 		public function disconnect():void
 		{
-			this._connection.removeEventListener(LoginEvent.LOGIN, onLoginHandler);
-			this._connection.removeEventListener(DisconnectionEvent.DISCONNECT, onDisconnect);
-			this._connection.removeEventListener(MessageEvent.MESSAGE, onMessage);
 			this._connection.disconnect();
 		}
 		
 		private function onLoginHandler(e:LoginEvent):void
-		{
-			this._connection.sendKeepAlive();
-			
+		{			
 			var p:Presence = new Presence();
 			p.show = Presence.SHOW_CHAT;
 			this._connection.send(p);
 			
+			this.pingTimer = new Timer(1*1000);
+			this.pingTimer.addEventListener(TimerEvent.TIMER, onPing);
+			
 			this.onConnected(e);
+		}
+		
+		private function onPing(e:TimerEvent):void
+		{
+			this._connection.sendKeepAlive();
 		}
 		
 		private function onDisconnect(e:DisconnectionEvent):void
 		{
-			this.onConnectFailed(e);
+			if(this.pingTimer != null)
+				this.pingTimer.stop();
+			this.pingTimer = null;
+			
+			this._connection.removeEventListener(LoginEvent.LOGIN, onLoginHandler);
+			this._connection.removeEventListener(DisconnectionEvent.DISCONNECT, onDisconnect);
+			this._connection.removeEventListener(MessageEvent.MESSAGE, onMessage);
+			
+			this.onDisconnected(e);
 		}
 		
 		private function onMessage(e:MessageEvent):void
