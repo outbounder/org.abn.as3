@@ -29,15 +29,26 @@ package org.abn.xmpp
 		public function XMPPContext(props:Array, id:String)
 		{
 			super(props);
+			this.msgRequests = new Array();
+			
 			this._username = this.getProp(id+".username") as String;
 			this._password = this.getProp(id+".password") as String;
 			this._server = this.getProp(id+".server") as String;
-			this.msgRequests = new Array();
 			
 			this._connection = new XMPPConnection();
 			this._connection.server = this.server;
-			this._connection.username = this.username;
-			this._connection.password = this.password;
+			if(this.username != null && this.password != null)
+			{
+				this._connection.username = this.username;
+				this._connection.password = this.password;
+			}
+			else
+				this._connection.useAnonymousLogin = true;
+		}
+		
+		public function get jid():String
+		{
+			return this._connection.jid.bareJid.toString();
 		}
 		
 		public function get username():String
